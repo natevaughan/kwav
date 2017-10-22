@@ -2,6 +2,8 @@ package com.natevaughan.kwav.core
 
 /**
  * Created by nate on 10/21/17
+ *
+ * Enums around common formats of channel data
  */
 enum class Channels(val count: Int) {
     MONO(1),
@@ -11,7 +13,7 @@ enum class Channels(val count: Int) {
 
     fun channelArray(): Array<Channel> {
         return when (this) {
-            MONO -> arrayOf(Channel.MONO)
+            MONO -> arrayOf(Channel.LEFT)
             STEREO -> arrayOf(Channel.LEFT, Channel.RIGHT)
             SURROUND_5_1 -> arrayOf(Channel.LEFT, Channel.RIGHT, Channel.CENTER, Channel.LOW_FREQUENCY, Channel.SURROUND_LEFT, Channel.SURROUND_RIGHT)
             SURROUND_7_1 -> arrayOf(Channel.LEFT, Channel.RIGHT, Channel.CENTER, Channel.LOW_FREQUENCY, Channel.SURROUND_LEFT, Channel.SURROUND_RIGHT, Channel.REAR_LEFT, Channel.REAR_RIGHT)
@@ -20,7 +22,6 @@ enum class Channels(val count: Int) {
 }
 
 enum class Channel(val order: Int) {
-    MONO(0),
     LEFT(1),
     RIGHT(2),
     CENTER(3),
@@ -45,13 +46,11 @@ enum class BitDepth(val bits: Byte) {
     }
 }
 
-enum class SampleRate(val bytes: ByteArray) {
-    KHZ_44_1(byteArrayOf(88, 58, 0, 0)),
-    KHZ_48_0(byteArrayOf()),
-    KHZ_88_2(byteArrayOf(88, 58, 1, 0)),
-    KHZ_96_0(byteArrayOf());
-
-    fun bytes(): ByteArray {
-        return bytes
-    }
+enum class SampleRate(val rate: Int) {
+    KHZ_44_1(44100),
+    KHZ_48(48000),
+    KHZ_88_2(88200),
+    KHZ_96(96000),
+    KHZ_176_4(176400),
+    KHZ_192(192000);
 }
