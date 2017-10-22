@@ -10,14 +10,14 @@ import org.junit.Test
 class AudioSampleTest {
     @Test
     fun testMonoSample() {
-        val sample = BasicSample(SampleRate.KHZ_44_1.rate, listOf(1.0, 2.0, 3.0, 4.0))
+        val sample = DoubleSample(SampleRate.KHZ_44_1.rate, listOf(1.0, 2.0, 3.0, 4.0))
         assertEquals(sample.size, 4)
     }
 
     @Test
     fun testMultichannelSample() {
-        val sampleL = BasicSample(SampleRate.KHZ_44_1.rate, listOf(1.0, 3.0))
-        val sampleR = BasicSample(SampleRate.KHZ_44_1.rate, listOf(2.0, 4.0))
+        val sampleL = DoubleSample(SampleRate.KHZ_44_1.rate, listOf(1.0, 3.0))
+        val sampleR = DoubleSample(SampleRate.KHZ_44_1.rate, listOf(2.0, 4.0))
         val multichannel = MultichannelSample<Double>(SampleRate.KHZ_44_1.rate, Channels.STEREO)
         multichannel.set(Channel.LEFT, sampleL)
         multichannel.set(Channel.RIGHT, sampleR)

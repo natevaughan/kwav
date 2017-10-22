@@ -6,30 +6,47 @@ package com.natevaughan.kwav.core
  *
  * Container for audio data with channel information
  */
-class MultichannelSample<T>(override val bitRate: Int,
-                            override val channels: Channels): MultichannelAudio<T> {
+class MultichannelSample(override val bitRate: Int,
+                            override val channels: Channels): MultichannelAudio<Double> {
 
-    val channelAudioData = HashMap<Channel, Sample<T>>()
+    val channelAudioData = HashMap<Channel, DoubleSample>()
 
 
-    fun set(channel: Channel, sample: Sample<T>) {
+    fun set(channel: Channel, sample: DoubleSample) {
         this.channelAudioData.put(channel, sample)
     }
 
-    override fun getInterleavedAudio(): List<T>{
+    override fun getInterleavedAudio(): Array<Double>{
+        if (channelAudioData.values.size < 1) {
+            throw RuntimeException("No data to interleave")
+        }
+
         val size = channelAudioData.values.first().size
         validate(size)
-        val interleaved = ArrayList<T>(size * channelAudioData.size)
+        val interleaved = DoubleArray(size * channelAudioData.size)
+        var index = 0
 
         for (i in 0 until size) {
             for (channel in channels.channelArray()) {
                 val sample = channelAudioData.get(channel)
                 if (sample != null) {
-                    interleaved.add(sample.samples.get(i))
+                    interleaved[index] = sample.samples.get(i)
+                    index++
                 }
             }
         }
-        return interleaved
+        return interleaved.toTypedArray()
+    }
+
+    fun getNormalizedAudio(bitDepth: Int, headroom: Int): List<Int> {
+        val max = getInterleavedAudio().map { Math.abs(it) }.max()
+
+        if (max != null) {
+            val maxWithHeadroom = max - headroom
+            return getInterleavedAudio().map { (it * bitDepth / max).toInt() }
+        }
+
+        throw RuntimeException("No data to normalize")
     }
 
     fun validate(size: Int) {
