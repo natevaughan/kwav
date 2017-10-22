@@ -6,10 +6,11 @@ package com.natevaughan.kwav.core
 interface AudioData<T> {
 
     val channels: Channels
-    fun getData(channel: Channel): Array<T>
+    val bitRate: Int
+    fun getData(channel: Channel): List<AudioChunk<T>>
     fun getDataInterleaved(): Array<T>
 
     fun put(key: Channel, sample: T)
-    fun putAll(key: Channel, samples: Array<T>)
-    fun putAll(samples: Array<T>)
+    fun putAll(key: Channel, samples: List<T>)
+    fun putAll(samples: List<T>)
 }
