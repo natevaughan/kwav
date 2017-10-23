@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.2">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>330</x>
+      <y>50</y>
+      <w>260</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Interface&gt;&gt;
+AudioData&lt;T&gt;
+-
+getBitDepth: Int
+getData(Channel): Array&lt;T&gt;
+getDataInterleaved(): Array&lt;T&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>60</x>
+      <y>50</y>
+      <w>170</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>Channels
+-
+MONO,
+STEREO,
+SURROUND_5_1,
+SURROUND_7_1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>60</x>
+      <y>280</y>
+      <w>170</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>Channel
+-
+MONO,
+LEFT,
+RIGHT,
+CENTER,
+LOW_FREQUENCY,
+SURROUND_LEFT,
+SURROUND_RIGHT,
+REAR_LEFT,
+REAR_RIGHT;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>120</x>
+      <y>170</y>
+      <w>50</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>m2=1..n</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>220</x>
+      <y>100</y>
+      <w>130</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>has a</panel_attributes>
+    <additional_attributes>10.0;20.0;110.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>700</x>
+      <y>270</y>
+      <w>140</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>WavFile
+-
+file: File
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>590</x>
+      <y>310</y>
+      <w>130</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+has a</panel_attributes>
+    <additional_attributes>10.0;20.0;110.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>680</x>
+      <y>480</y>
+      <w>200</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>WavHeaders
+-
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>760</x>
+      <y>390</y>
+      <w>30</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;90.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>420</x>
+      <y>270</y>
+      <w>180</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>WavUtils
+-
+WavData</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
