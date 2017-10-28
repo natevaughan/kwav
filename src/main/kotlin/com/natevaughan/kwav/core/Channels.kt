@@ -11,14 +11,13 @@ enum class Channels(val count: Int) {
     SURROUND_5_1(6),
     SURROUND_7_1(8);
 
-    fun channelArray(): Array<Channel> {
-        return when (this) {
+    val array: Array<Channel>
+    get() = when (this) {
             MONO -> arrayOf(Channel.LEFT)
             STEREO -> arrayOf(Channel.LEFT, Channel.RIGHT)
             SURROUND_5_1 -> arrayOf(Channel.LEFT, Channel.RIGHT, Channel.CENTER, Channel.LOW_FREQUENCY, Channel.SURROUND_LEFT, Channel.SURROUND_RIGHT)
             SURROUND_7_1 -> arrayOf(Channel.LEFT, Channel.RIGHT, Channel.CENTER, Channel.LOW_FREQUENCY, Channel.SURROUND_LEFT, Channel.SURROUND_RIGHT, Channel.REAR_LEFT, Channel.REAR_RIGHT)
         }
-    }
 }
 
 enum class Channel(val order: Int) {
@@ -36,14 +35,6 @@ enum class Channel(val order: Int) {
 enum class BitDepth(val bits: Byte) {
     BIT_16(16),
     BIT_24(24);
-
-    val byteSize: Byte get() {
-        return (bits / 8).toByte()
-    }
-
-    fun byteSignature(): ByteArray {
-        return byteArrayOf(bits, 0)
-    }
 }
 
 enum class SampleRate(val rate: Int) {

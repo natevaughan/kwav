@@ -8,9 +8,9 @@ package com.natevaughan.kwav.core
 data class DoubleSample(override val bitRate: Int, val audioData: DoubleArray) : Sample<Double> {
 
     override val samples: List<Double>
-            get() = samples.toList()
+            get() = audioData.toList()
 
     override val size: Int
-        get() = samples.size
+        get() = audioData.size
 
 }

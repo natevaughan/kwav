@@ -6,7 +6,7 @@ package com.natevaughan.kwav.core
  * Container for audio data with channel information
  */
 interface MultichannelAudio<T: Comparable<T>> {
-    val bitRate: Int
+    val sampleRate: Int
     val channels: Channels
     fun getInterleavedAudio(): Array<T>
 }

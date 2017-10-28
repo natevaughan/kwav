@@ -6,29 +6,29 @@ package com.natevaughan.kwav.core
  *
  * Container for audio data with channel information
  */
-class MultichannelSample(override val bitRate: Int,
-                            override val channels: Channels): MultichannelAudio<Double> {
+class MultichannelSample(override val sampleRate: Int,
+                         override val channels: Channels): MultichannelAudio<Double> {
 
-    val channelAudioData = HashMap<Channel, DoubleSample>()
+    val audioData = HashMap<Channel, DoubleSample>()
 
 
     fun set(channel: Channel, sample: DoubleSample) {
-        this.channelAudioData.put(channel, sample)
+        this.audioData.put(channel, sample)
     }
 
     override fun getInterleavedAudio(): Array<Double>{
-        if (channelAudioData.values.size < 1) {
+        if (audioData.values.size < 1) {
             throw RuntimeException("No data to interleave")
         }
 
-        val size = channelAudioData.values.first().size
+        val size = audioData.values.first().size
         validate(size)
-        val interleaved = DoubleArray(size * channelAudioData.size)
+        val interleaved = DoubleArray(size * audioData.size)
         var index = 0
 
         for (i in 0 until size) {
-            for (channel in channels.channelArray()) {
-                val sample = channelAudioData.get(channel)
+            for (channel in channels.array) {
+                val sample = audioData.get(channel)
                 if (sample != null) {
                     interleaved[index] = sample.samples.get(i)
                     index++
@@ -50,8 +50,8 @@ class MultichannelSample(override val bitRate: Int,
     }
 
     fun validate(size: Int) {
-        for (channel in channels.channelArray()) {
-            if (!size.equals(channelAudioData.get(channel)?.size)) {
+        for (channel in channels.array) {
+            if (!size.equals(audioData.get(channel)?.size)) {
                 throw RuntimeException("Channel data not of the same length. Please pad data with silence")
             }
         }
