@@ -5,16 +5,35 @@ import java.io.File
 import java.io.FileOutputStream
 
 class WavFile(val file: File, val wavHeaders: WavHeaders) {
+
+    var audioData: Array<Int>? = null
+
     fun create() {
-        var outputStream: FileOutputStream? = null
-        try {
-            outputStream = FileOutputStream(file)
-            outputStream.write("hello, world".toByteArray())
-        } finally {
-            try {
-                outputStream?.close()
-            } catch (e: Throwable) {
-            }
+        FileOutputStream(file).use {
+            it.write(riff + wave + fmt + "hello, world".toByteArray())
         }
+    }
+
+    companion object {
+        val riff = byteArrayOf(
+                'R'.toByte(),
+                'I'.toByte(),
+                'F'.toByte(),
+                'F'.toByte()
+        )
+
+        val wave = byteArrayOf(
+                'W'.toByte(),
+                'A'.toByte(),
+                'V'.toByte(),
+                'E'.toByte()
+        )
+
+        val fmt = byteArrayOf(
+                'f'.toByte(),
+                'm'.toByte(),
+                't'.toByte(),
+                ' '.toByte()
+        )
     }
 }

@@ -11,19 +11,19 @@ import org.junit.Test
 class AudioSampleTest {
     @Test
     fun testMonoSample() {
-        val sample = DoubleSample(SampleRate.KHZ_44_1.rate, doubleArrayOf(1.0, 2.0, 3.0, 4.0))
+        val sample = LongSample(SampleRate.KHZ_44_1.rate, longArrayOf(1, 2, 3, 4))
         assertEquals(sample.size, 4)
     }
 
     @Test
     fun testMultichannelSample() {
-        val sampleL = DoubleSample(SampleRate.KHZ_44_1.rate, doubleArrayOf(1.0, 3.0))
-        val sampleR = DoubleSample(SampleRate.KHZ_44_1.rate, doubleArrayOf(2.0, 4.0))
+        val sampleL = LongSample(SampleRate.KHZ_44_1.rate, longArrayOf(1, 3))
+        val sampleR = LongSample(SampleRate.KHZ_44_1.rate, longArrayOf(2, 4))
         val multichannel = MultichannelSample(SampleRate.KHZ_44_1.rate, Channels.STEREO)
         multichannel.set(Channel.LEFT, sampleL)
         multichannel.set(Channel.RIGHT, sampleR)
         val interleaved = multichannel.getInterleavedAudio()
-        assertArrayEquals(arrayOf(1.0, 2.0, 3.0, 4.0), interleaved)
+        assertArrayEquals(arrayOf(1L, 2L, 3L, 4L), interleaved)
     }
 
     fun getRand(sampleRate: Long): Int {

@@ -7,23 +7,23 @@ package com.natevaughan.kwav.core
  * Container for audio data with channel information
  */
 class MultichannelSample(override val sampleRate: Int,
-                         override val channels: Channels): MultichannelAudio<Double> {
+                         override val channels: Channels): MultichannelAudio<Long> {
 
-    val audioData = HashMap<Channel, DoubleSample>()
+    val audioData = HashMap<Channel, LongSample>()
 
 
-    fun set(channel: Channel, sample: DoubleSample) {
+    fun set(channel: Channel, sample: LongSample) {
         this.audioData.put(channel, sample)
     }
 
-    override fun getInterleavedAudio(): Array<Double>{
+    override fun getInterleavedAudio(): Array<Long>{
         if (audioData.values.size < 1) {
             throw RuntimeException("No data to interleave")
         }
 
         val size = audioData.values.first().size
         validate(size)
-        val interleaved = DoubleArray(size * audioData.size)
+        val interleaved = LongArray(size * audioData.size)
         var index = 0
 
         for (i in 0 until size) {
