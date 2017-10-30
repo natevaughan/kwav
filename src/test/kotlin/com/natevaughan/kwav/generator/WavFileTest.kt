@@ -1,7 +1,12 @@
 package com.natevaughan.kwav.generator
 
+import com.natevaughan.kwav.core.BitDepth
+import com.natevaughan.kwav.core.Channels
+import com.natevaughan.kwav.core.SampleRate
 import com.natevaughan.kwav.extension.unsigned
+import com.natevaughan.kwav.wav.WavFile
 import org.junit.Test
+import java.io.File
 
 /**
  * Created by nate on 10/22/17
@@ -9,17 +14,26 @@ import org.junit.Test
 class WavFileTest {
 
     @Test
-    fun readWave() {
-        val byteBuffer = ByteArray(256)
-        val inStream = javaClass.classLoader.getResourceAsStream("sample.wav")
-        inStream.use {
-            var i = 0
-            while (it.read(byteBuffer) != 1 && i < 100) {
-                ++i
-                for (byte in byteBuffer) {
-                    println(byte.unsigned())
-                }
-            }
+    fun writeNoise() {
+        val seconds = 5
+        val wav =  WavFile(File("test-output/noise.wav"), WavHeaders(Channels.STEREO, BitDepth.BIT_16, SampleRate.KHZ_44_1))
+
+        wav.audioData = generateNoise(seconds, Channels.STEREO, SampleRate.KHZ_44_1)
+
+        for (byt in wav.getHeaderBytes())  {
+            println(byt.unsigned())
         }
+        wav.create()
+    }
+
+
+    @Test
+    fun writeSine() {
+        val seconds = 5
+        val wav =  WavFile(File("test-output/sine.wav"), WavHeaders(Channels.STEREO, BitDepth.BIT_16, SampleRate.KHZ_44_1))
+
+        wav.audioData = generateSine(440, seconds, Channels.STEREO, SampleRate.KHZ_44_1)
+
+        wav.create()
     }
 }

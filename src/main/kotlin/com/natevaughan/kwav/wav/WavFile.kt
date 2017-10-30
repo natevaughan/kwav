@@ -3,6 +3,8 @@ package com.natevaughan.kwav.wav
 import com.natevaughan.kwav.generator.WavHeaders
 import java.io.File
 import java.io.FileOutputStream
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
 
 class WavFile(val file: File, val wavHeaders: WavHeaders) {
 
@@ -10,30 +12,55 @@ class WavFile(val file: File, val wavHeaders: WavHeaders) {
 
     fun create() {
         FileOutputStream(file).use {
-            it.write(riff + wave + fmt + "hello, world".toByteArray())
+            it.write(getHeaderBytes())
         }
     }
 
-    companion object {
-        val riff = byteArrayOf(
-                'R'.toByte(),
-                'I'.toByte(),
-                'F'.toByte(),
-                'F'.toByte()
-        )
+    val blockSize: Short
+            get() = (wavHeaders.bitDepth.bits / 8 * wavHeaders.channels.count).toShort()
 
-        val wave = byteArrayOf(
-                'W'.toByte(),
-                'A'.toByte(),
-                'V'.toByte(),
-                'E'.toByte()
-        )
+    val dataRate: Int
+        get() = (wavHeaders.sampleRate.rate * blockSize)
 
-        val fmt = byteArrayOf(
-                'f'.toByte(),
-                'm'.toByte(),
-                't'.toByte(),
-                ' '.toByte()
-        )
+    fun getHeaderBytes(): ByteArray {
+        val dataSize = audioData?.size ?: 0
+        val byteSize = 44 + dataSize * 4
+
+        val buffer = ByteBuffer.allocate(byteSize).order(ByteOrder.LITTLE_ENDIAN)
+        buffer.put('R'.toByte())
+        buffer.put('I'.toByte())
+        buffer.put('F'.toByte())
+        buffer.put('F'.toByte())
+
+        buffer.putInt(byteSize)
+
+        buffer.put('W'.toByte())
+        buffer.put('A'.toByte())
+        buffer.put('V'.toByte())
+        buffer.put('E'.toByte())
+
+        buffer.put('f'.toByte())
+        buffer.put('m'.toByte())
+        buffer.put('t'.toByte())
+        buffer.put(' '.toByte())
+
+        buffer.putInt(16)
+        buffer.putShort(1)
+        buffer.putShort(wavHeaders.channels.count)
+        buffer.putInt(wavHeaders.sampleRate.rate)
+        buffer.putInt(dataRate)
+        buffer.putShort(blockSize)
+        buffer.putShort(wavHeaders.bitDepth.bits)
+        buffer.put('d'.toByte())
+        buffer.put('a'.toByte())
+        buffer.put('t'.toByte())
+        buffer.put('a'.toByte())
+        buffer.putInt(dataSize)
+        val dataSnapshot = audioData ?: emptyArray()
+        for (d in dataSnapshot) {
+            buffer.putShort(d.toShort())
+        }
+
+        return buffer.array()
     }
 }

@@ -5,7 +5,7 @@ package com.natevaughan.kwav.core
  *
  * Enums around common formats of channel data
  */
-enum class Channels(val count: Int) {
+enum class Channels(val count: Short) {
     MONO(1),
     STEREO(2),
     SURROUND_5_1(6),
@@ -32,7 +32,7 @@ enum class Channel(val order: Int) {
 }
 
 
-enum class BitDepth(val bits: Byte) {
+enum class BitDepth(val bits: Short) {
     BIT_16(16),
     BIT_24(24);
 }
