@@ -4,6 +4,7 @@ package com.natevaughan.kwav.generator
 
 import com.natevaughan.kwav.core.Channels
 import com.natevaughan.kwav.core.SampleRate
+import com.natevaughan.kwav.core.interleave
 
 fun generateNoise(seconds: Int, channels: Channels, sampleRate: SampleRate): Array<Int> {
     val size =  (seconds * channels.count * sampleRate.rate)
@@ -11,8 +12,13 @@ fun generateNoise(seconds: Int, channels: Channels, sampleRate: SampleRate): Arr
     return (0..size).map { (Math.random() * Short.MAX_VALUE * 2 - Short.MAX_VALUE).toInt() }.toTypedArray()
 }
 
-fun generateSine(frequency: Int, seconds: Int, channels: Channels, sampleRate: SampleRate): Array<Int> {
-    val size =  (seconds * channels.count * sampleRate.rate)
+fun generateSine(frequency: Double, seconds: Int, channels: Channels, sampleRate: SampleRate): Array<Int> {
+    val size =  (seconds * sampleRate.rate)
+    val samplesPerCycle = sampleRate.rate / frequency
 
-    return (0..size).map { (Math.sin(it.toDouble() * Math.PI / frequency) * Short.MAX_VALUE * 2 - Short.MAX_VALUE).toInt() }.toTypedArray()
+    return interleave((0 until channels.count).map {(0..size).map { outer ->
+            (Math.sin(outer * Math.PI / samplesPerCycle) *
+                    Short.MAX_VALUE * 2 - Short.MAX_VALUE).toInt()
+        }.toTypedArray()
+    }.toTypedArray())
 }

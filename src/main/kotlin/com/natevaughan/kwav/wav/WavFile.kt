@@ -55,7 +55,7 @@ class WavFile(val file: File, val wavHeaders: WavHeaders) {
         buffer.put('a'.toByte())
         buffer.put('t'.toByte())
         buffer.put('a'.toByte())
-        buffer.putInt(dataSize)
+        buffer.putInt(dataSize * blockSize / wavHeaders.channels.count)
         val dataSnapshot = audioData ?: emptyArray()
         for (d in dataSnapshot) {
             buffer.putShort(d.toShort())

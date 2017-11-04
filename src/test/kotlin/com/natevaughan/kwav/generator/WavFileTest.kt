@@ -5,6 +5,7 @@ import com.natevaughan.kwav.core.Channels
 import com.natevaughan.kwav.core.SampleRate
 import com.natevaughan.kwav.extension.unsigned
 import com.natevaughan.kwav.wav.WavFile
+import com.natevaughan.kwav.generator.AbsoluteNote.*
 import org.junit.Test
 import java.io.File
 
@@ -29,10 +30,11 @@ class WavFileTest {
 
     @Test
     fun writeSine() {
-        val seconds = 5
         val wav =  WavFile(File("test-output/sine.wav"), WavHeaders(Channels.STEREO, BitDepth.BIT_16, SampleRate.KHZ_44_1))
 
-        wav.audioData = generateSine(440, seconds, Channels.STEREO, SampleRate.KHZ_44_1)
+        wav.audioData = generateSine(G3.hz, 1, Channels.STEREO, SampleRate.KHZ_44_1) +
+                generateSine(E4.hz, 1, Channels.STEREO, SampleRate.KHZ_44_1) +
+                generateSine(C4.hz, 1, Channels.STEREO, SampleRate.KHZ_44_1)
 
         wav.create()
     }
